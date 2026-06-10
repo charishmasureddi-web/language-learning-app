@@ -1,4 +1,6 @@
-# Welcome to your Expo app 👋
+# 🌎 Language Learning App
+
+A React Native + Expo mobile application designed to help users learn Spanish through vocabulary, grammar lessons, flashcards, quizzes, and progress tracking.
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
