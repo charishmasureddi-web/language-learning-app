@@ -1,98 +1,200 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import { router } from "expo-router";
+import {
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function HomeScreen() {
+  const menuItems = [
+    {
+      title: "Vocabulary",
+      emoji: "📖",
+      subtitle: "Browse and search words",
+      route: "/vocabulary",
+    },
+    {
+      title: "Grammar",
+      emoji: "✍️",
+      subtitle: "Learn grammar rules",
+      route: "/grammar",
+    },
+    {
+      title: "Flashcards",
+      emoji: "🃏",
+      subtitle: "Practice with flashcards",
+      route: "/flashcards",
+    },
+    {
+      title: "Quiz",
+      emoji: "🧠",
+      subtitle: "Test your knowledge",
+      route: "/quiz",
+    },
+    {
+      title: "Progress",
+      emoji: "📊",
+      subtitle: "Track achievements",
+      route: "/progress",
+    },
+  ];
+
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <ScrollView
+      style={{
+        flex: 1,
+        backgroundColor: "#F3F4F6",
+      }}
+      showsVerticalScrollIndicator={false}
+    >
+      <View
+        style={{
+          padding: 20,
+          paddingTop: 60,
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: "#4F46E5",
+            borderRadius: 30,
+            padding: 30,
+            marginBottom: 25,
+          }}
+        >
+          <Text
+            style={{
+              color: "white",
+              fontSize: 34,
+              fontWeight: "bold",
+            }}
+          >
+            🌎 Language Learning
+          </Text>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+          <Text
+            style={{
+              color: "#E0E7FF",
+              marginTop: 10,
+              fontSize: 16,
+              lineHeight: 24,
+            }}
+          >
+            Learn Spanish through Vocabulary,
+            Grammar Lessons, Flashcards and Quizzes.
+          </Text>
+        </View>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+        <Text
+          style={{
+            fontSize: 24,
+            fontWeight: "bold",
+            marginBottom: 15,
+          }}
+        >
+          Learning Modules
+        </Text>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        {menuItems.map((item) => (
+          <TouchableOpacity
+            key={item.title}
+            onPress={() => router.push(item.route as any)}
+            activeOpacity={0.85}
+            style={card}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 38,
+                  marginRight: 15,
+                }}
+              >
+                {item.emoji}
+              </Text>
+
+              <View style={{ flex: 1 }}>
+                <Text style={title}>
+                  {item.title}
+                </Text>
+
+                <Text style={subtitle}>
+                  {item.subtitle}
+                </Text>
+              </View>
+
+              <Text
+                style={{
+                  fontSize: 24,
+                  color: "#9CA3AF",
+                }}
+              >
+                ›
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+const card = {
+  backgroundColor: "white",
+  padding: 20,
+  borderRadius: 24,
+  marginBottom: 15,
+
+  shadowColor: "#000",
+  shadowOpacity: 0.08,
+  shadowRadius: 8,
+  shadowOffset: {
+    width: 0,
+    height: 4,
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+
+  elevation: 5,
+};
+
+const title = {
+  fontSize: 20,
+  fontWeight: "bold" as const,
+};
+
+const subtitle = {
+  color: "#6B7280",
+  marginTop: 4,
+};
+
+const statCard = {
+  backgroundColor: "white",
+  width: "31%",
+  padding: 15,
+  borderRadius: 20,
+  alignItems: "center" as const,
+
+  shadowColor: "#000",
+  shadowOpacity: 0.06,
+  shadowRadius: 6,
+  shadowOffset: {
+    width: 0,
+    height: 3,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
-});
+
+  elevation: 3,
+};
+
+const statValue = {
+  fontSize: 22,
+  fontWeight: "bold" as const,
+  color: "#4F46E5",
+};
+
+const statLabel = {
+  color: "#6B7280",
+  marginTop: 5,
+};
